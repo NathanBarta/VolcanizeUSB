@@ -7,19 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D80237552BACD37C0077C0C8 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80237542BACD37C0077C0C8 /* ViewModel.swift */; };
+		D86773E82BADD2540078F84E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86773E72BADD2540078F84E /* Constants.swift */; };
 		D8E36F062B9A582F00C71FC4 /* VulcanizeUSBApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E36F052B9A582F00C71FC4 /* VulcanizeUSBApp.swift */; };
 		D8E36F082B9A582F00C71FC4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E36F072B9A582F00C71FC4 /* ContentView.swift */; };
 		D8E36F0A2B9A583000C71FC4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8E36F092B9A583000C71FC4 /* Assets.xcassets */; };
 		D8E36F0D2B9A583000C71FC4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8E36F0C2B9A583000C71FC4 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D8E36F292B9A58C900C71FC4 /* Embed System Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(SYSTEM_EXTENSIONS_FOLDER_PATH)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed System Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		D80237542BACD37C0077C0C8 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		D86773E72BADD2540078F84E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D8E36F022B9A582F00C71FC4 /* VulcanizeUSB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VulcanizeUSB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8E36F052B9A582F00C71FC4 /* VulcanizeUSBApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VulcanizeUSBApp.swift; sourceTree = "<group>"; };
 		D8E36F072B9A582F00C71FC4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D8E36F092B9A583000C71FC4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8E36F0C2B9A583000C71FC4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D8E36F0E2B9A583000C71FC4 /* VulcanizeUSB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VulcanizeUSB.entitlements; sourceTree = "<group>"; };
+		D8E36F2A2B9A5AB700C71FC4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				D8E36F042B9A582F00C71FC4 /* VulcanizeUSB */,
+				D8E36F1A2B9A58C900C71FC4 /* Frameworks */,
 				D8E36F032B9A582F00C71FC4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,11 +71,14 @@
 		D8E36F042B9A582F00C71FC4 /* VulcanizeUSB */ = {
 			isa = PBXGroup;
 			children = (
+				D8E36F2A2B9A5AB700C71FC4 /* Info.plist */,
 				D8E36F052B9A582F00C71FC4 /* VulcanizeUSBApp.swift */,
 				D8E36F072B9A582F00C71FC4 /* ContentView.swift */,
+				D80237542BACD37C0077C0C8 /* ViewModel.swift */,
 				D8E36F092B9A583000C71FC4 /* Assets.xcassets */,
 				D8E36F0E2B9A583000C71FC4 /* VulcanizeUSB.entitlements */,
 				D8E36F0B2B9A583000C71FC4 /* Preview Content */,
+				D86773E72BADD2540078F84E /* Constants.swift */,
 			);
 			path = VulcanizeUSB;
 			sourceTree = "<group>";
@@ -69,6 +91,13 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		D8E36F1A2B9A58C900C71FC4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -79,12 +108,15 @@
 				D8E36EFE2B9A582F00C71FC4 /* Sources */,
 				D8E36EFF2B9A582F00C71FC4 /* Frameworks */,
 				D8E36F002B9A582F00C71FC4 /* Resources */,
+				D8E36F292B9A58C900C71FC4 /* Embed System Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = VulcanizeUSB;
+			packageProductDependencies = (
+			);
 			productName = VulcanizeUSB;
 			productReference = D8E36F022B9A582F00C71FC4 /* VulcanizeUSB.app */;
 			productType = "com.apple.product-type.application";
@@ -113,6 +145,8 @@
 				Base,
 			);
 			mainGroup = D8E36EF92B9A582F00C71FC4;
+			packageReferences = (
+			);
 			productRefGroup = D8E36F032B9A582F00C71FC4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -140,7 +174,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8E36F082B9A582F00C71FC4 /* ContentView.swift in Sources */,
+				D80237552BACD37C0077C0C8 /* ViewModel.swift in Sources */,
 				D8E36F062B9A582F00C71FC4 /* VulcanizeUSBApp.swift in Sources */,
+				D86773E82BADD2540078F84E /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +307,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = VulcanizeUSB/VulcanizeUSB.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -279,6 +316,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VulcanizeUSB/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -298,6 +337,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = VulcanizeUSB/VulcanizeUSB.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -306,6 +346,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VulcanizeUSB/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
