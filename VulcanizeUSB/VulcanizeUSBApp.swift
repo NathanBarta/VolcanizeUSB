@@ -13,6 +13,7 @@ import SwiftUI
 // https://developer.apple.com/documentation/driverkit/debugging_and_testing_system_extensions
 
 // https://usb.org/sites/default/files/hut1_5.pdf
+// https://www.usb.org/sites/default/files/hid1_11.pdf
 // Base class: 0x3h (HID)
 // Descriptor: 0x07 (Keyboard / KeyPad)
 
@@ -192,6 +193,11 @@ import SwiftUI
 
 // `open /Library/Preferences/com.apple.keyboardtype.plist`
 // To see keyboard settings. Format: "productid-idvendor-?
+
+// https://developer.apple.com/library/archive/documentation/DeviceDrivers/Conceptual/AccessingHardware/AH_Intro/AH_Intro.html
+// Might contain doccumentation on IOPluggin stuff
+
+// https://chrispaynter.medium.com/what-to-do-when-your-macos-daemon-gets-blocked-by-tcc-dialogues-d3a1b991151f
 
 @main
 struct VulcanizeUSBApp: App {

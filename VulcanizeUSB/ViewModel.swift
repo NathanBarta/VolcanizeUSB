@@ -25,9 +25,10 @@ final public class ViewModel: ObservableObject {
     
     CFRunLoopAddSource(CFRunLoopGetMain(), self.runLoop, CFRunLoopMode.defaultMode)
     
-    var ioDeviceIterator: io_iterator_t = io_iterator_t()
+    var ioInterfaceIterator: io_iterator_t = io_iterator_t()
     
-    let d: CFDictionary = IOServiceMatching("IOUSBDevice")
+    let d: CFDictionary = IOServiceMatching("IOUSBInterface")
+    print(d)
     
     let selfPointer = Unmanaged.passUnretained(self).toOpaque()
     let bridge: IOServiceMatchingCallback = { p, iterator in
@@ -35,41 +36,39 @@ final public class ViewModel: ObservableObject {
       this.usbMatchingNotification(iterator)
     }
     
-    let error: kern_return_t = IOServiceAddMatchingNotification(self.notificationPort, kIOMatchedNotification, d, bridge, selfPointer, &ioDeviceIterator)
+    let error: kern_return_t = IOServiceAddMatchingNotification(self.notificationPort, kIOMatchedNotification, d, bridge, selfPointer, &ioInterfaceIterator)
     if error != kIOReturnSuccess {
       fatalError(String(describing: error))
     }
     
-    self.usbMatchingNotification(ioDeviceIterator)
+    self.usbMatchingNotification(ioInterfaceIterator)
     RunLoop.current.run()
   }
   
   private func usbMatchingNotification(_ iterator: io_iterator_t) {
     guard (IOIteratorIsValid(iterator) != 0) else { return }
 
-    while case let device = IOIteratorNext(iterator), device != 0 {
+    while case let interface = IOIteratorNext(iterator), interface != 0 {
       // Credit: https://stackoverflow.com/questions/31814292/swift2-correct-way-to-initialise-unsafemutablepointerunmanagedcfmutabledictio
       var properties: Unmanaged<CFMutableDictionary>?
-      if IORegistryEntryCreateCFProperties(device, &properties, kCFAllocatorDefault, 0) == KERN_SUCCESS {
+      if IORegistryEntryCreateCFProperties(interface, &properties, kCFAllocatorDefault, 0) == KERN_SUCCESS {
         if let properties = properties {
           let d = properties.takeRetainedValue() as NSDictionary
-//          print(d)
+          print(d)
           
-          // Base class: 03h (HID)
-          // Descriptor: 0x07 (Keyboard / KeyPad)
-          if isIdentifyingAsKeyboard(
-            d.value(forKey: "bDeviceClass") as? Int ?? 0,
-            d.value(forKey: "bDeviceSubClass") as? Int ?? 0
-          ) {
-            seizeKeyboard(device, properties: properties)
-          } else {
-            IOObjectRelease(device)
-//            properties.release() // no idea
+          if d.value(forKey: "bInterfaceProtocol") as? Int ?? .zero == 0x1 { // shitty for now
+            seizeKeyboard(interface, properties: properties)
           }
+          IOObjectRelease(interface)
         }
       }
     }
   }
+  
+  // bInterfaceClass/baseclass: 0x3 (HID)
+  // bInterfaceSubClass/descriptor: 0x7 (Keyboard), 0x1 (Pointer, Boot interface subclass?)
+  //      pointer seems to be my keyboard... it is! 0x2 is for a mouse...
+  // bInterfaceProtocol: 0x1 (Keyboard?, only has meaning if bInterfaceSubClass is 0x1)
   
   private func isIdentifyingAsKeyboard(_ baseClass: Int, _ descriptor: Int) -> Bool {
     // Keyboards: 0x3, 0x7
@@ -84,42 +83,46 @@ final public class ViewModel: ObservableObject {
   }
   
   // take out? Figure out what to use?
-  public let kIOUSBDeviceInterfaceID = CFUUIDGetConstantUUIDWithBytes(nil, 0x5c, 0x81, 0x87, 0xd0, 0x9e, 0xf3, 0x11, 0xD4, 0x8b, 0x45, 0x00, 0x0a, 0x27, 0x05, 0x28, 0x61)
+  public let kIOUSBDeviceInterfaceID100 = CFUUIDGetConstantUUIDWithBytes(nil, 0x5c, 0x81, 0x87, 0xd0, 0x9e, 0xf3, 0x11, 0xD4, 0x8b, 0x45, 0x00, 0x0a, 0x27, 0x05, 0x28, 0x61)
   
-  private func seizeKeyboard(_ device: io_service_t, properties: Unmanaged<CFMutableDictionary>) {
+  public let kIOUSBDeviceInterfaceID942 = CFUUIDGetConstantUUIDWithBytes(nil, 0x56, 0xAD, 0x08, 0x9D, 0x87, 0x8D, 0x4B, 0xEA, 0xA1, 0xF5, 0x2C, 0x8D, 0xC4, 0x3E, 0x8A, 0x98)
+  
+  public let kIOUSBInterfaceInterfaceID942 = CFUUIDGetConstantUUIDWithBytes(nil, 0x87, 0x52, 0x66, 0x3B, 0xC0, 0x7B, 0x4B, 0xAE, 0x95, 0x84, 0x22, 0x03, 0x2F, 0xAB, 0x9C, 0x5A)
+  
+  private func seizeKeyboard(_ interface: io_service_t, properties: Unmanaged<CFMutableDictionary>) {
     print("Seize!")
     
     var error: Int32 = 0
     var score: Int32 = 0
     
-    var usbDeviceInterfacePointerPointer: UnsafeMutablePointer<UnsafeMutablePointer<USBDeviceInterfaceStruct>?>?
+    var usbInterfaceInterfacePointerPointer: UnsafeMutablePointer<UnsafeMutablePointer<USBInterfaceInterfaceStruct>?>?
     var plugInInterfacePointerPointer: UnsafeMutablePointer<UnsafeMutablePointer<IOCFPlugInInterface>?>?
     
-    error = IOCreatePlugInInterfaceForService(device, kIOUSBDeviceUserClientTypeID, kIOCFPlugInInterfaceID, &plugInInterfacePointerPointer, &score)
+    error = IOCreatePlugInInterfaceForService(interface, kIOUSBInterfaceUserClientTypeID, kIOCFPlugInInterfaceID, &plugInInterfacePointerPointer, &score)
     if error != kIOReturnSuccess {
       fatalError(String(describing: error))
     }
     
-    IOObjectRelease(device)
+    IOObjectRelease(interface)
     
     guard let plugInInterface = plugInInterfacePointerPointer?.pointee?.pointee else { fatalError("Unable to get Plug-In Interface") }
     
-    error = withUnsafeMutablePointer(to: &usbDeviceInterfacePointerPointer) {
+    error = withUnsafeMutablePointer(to: &usbInterfaceInterfacePointerPointer) {
       $0.withMemoryRebound(to: Optional<LPVOID>.self, capacity: 1) {
         plugInInterface.QueryInterface(
           plugInInterfacePointerPointer,
-          CFUUIDGetUUIDBytes(kIOUSBDeviceInterfaceID),
+          CFUUIDGetUUIDBytes(kIOUSBInterfaceInterfaceID942),
           $0)
       }
     }
-    
+            
     if error != kIOReturnSuccess {
       fatalError(String(describing: error))
     }
     
-    guard let deviceInterface = usbDeviceInterfacePointerPointer?.pointee?.pointee else { fatalError("Unable to get Device Interface") }
+    guard let interfaceInterface = usbInterfaceInterfacePointerPointer?.pointee?.pointee else { fatalError("Unable to get Device Interface") }
     
-    error = deviceInterface.USBDeviceOpen(usbDeviceInterfacePointerPointer)
+    error = interfaceInterface.USBInterfaceOpenSeize(usbInterfaceInterfacePointerPointer)
     
     if (error != kIOReturnSuccess && error != kIOReturnExclusiveAccess) {
         print("Could not open device (error: \(error))")

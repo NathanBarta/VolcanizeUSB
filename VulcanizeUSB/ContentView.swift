@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
-  @StateObject var viewModel = ViewModel()
+  @StateObject var viewModel = HIDDeputy()
   
-    var body: some View {
-        VStack {
-            Text("Hello, world!")
-        }
-        .padding()
+  var body: some View {
+    VStack {
+      Text("Hello, world!")
     }
+    .padding()
+  }
 }
 
 #Preview {
-    ContentView()
+  ContentView()
 }
