@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ContentView: View {
-  @StateObject var viewModel = HIDDeputy()
   
   var body: some View {
     VStack {

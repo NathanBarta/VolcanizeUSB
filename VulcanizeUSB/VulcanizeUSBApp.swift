@@ -201,9 +201,11 @@ import SwiftUI
 
 @main
 struct VulcanizeUSBApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  @StateObject var deputy = HIDDeputy()
+
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
     }
+  }
 }
