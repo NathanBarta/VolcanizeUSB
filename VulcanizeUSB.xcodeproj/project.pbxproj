@@ -11,7 +11,6 @@
 		D86773E82BADD2540078F84E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86773E72BADD2540078F84E /* Constants.swift */; };
 		D8854B2E2BB24484007B16C3 /* HIDDeputy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8854B2D2BB24484007B16C3 /* HIDDeputy.swift */; };
 		D8E36F062B9A582F00C71FC4 /* VulcanizeUSBApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E36F052B9A582F00C71FC4 /* VulcanizeUSBApp.swift */; };
-		D8E36F082B9A582F00C71FC4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E36F072B9A582F00C71FC4 /* ContentView.swift */; };
 		D8E36F0A2B9A583000C71FC4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8E36F092B9A583000C71FC4 /* Assets.xcassets */; };
 		D8E36F0D2B9A583000C71FC4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8E36F0C2B9A583000C71FC4 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -35,7 +34,6 @@
 		D8854B2D2BB24484007B16C3 /* HIDDeputy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HIDDeputy.swift; sourceTree = "<group>"; };
 		D8E36F022B9A582F00C71FC4 /* VulcanizeUSB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VulcanizeUSB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8E36F052B9A582F00C71FC4 /* VulcanizeUSBApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VulcanizeUSBApp.swift; sourceTree = "<group>"; };
-		D8E36F072B9A582F00C71FC4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D8E36F092B9A583000C71FC4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8E36F0C2B9A583000C71FC4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D8E36F0E2B9A583000C71FC4 /* VulcanizeUSB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VulcanizeUSB.entitlements; sourceTree = "<group>"; };
@@ -75,7 +73,6 @@
 			children = (
 				D8E36F2A2B9A5AB700C71FC4 /* Info.plist */,
 				D8E36F052B9A582F00C71FC4 /* VulcanizeUSBApp.swift */,
-				D8E36F072B9A582F00C71FC4 /* ContentView.swift */,
 				D80237542BACD37C0077C0C8 /* ViewModel.swift */,
 				D8854B2D2BB24484007B16C3 /* HIDDeputy.swift */,
 				D8E36F092B9A583000C71FC4 /* Assets.xcassets */,
@@ -176,7 +173,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8E36F082B9A582F00C71FC4 /* ContentView.swift in Sources */,
 				D80237552BACD37C0077C0C8 /* ViewModel.swift in Sources */,
 				D8854B2E2BB24484007B16C3 /* HIDDeputy.swift in Sources */,
 				D8E36F062B9A582F00C71FC4 /* VulcanizeUSBApp.swift in Sources */,

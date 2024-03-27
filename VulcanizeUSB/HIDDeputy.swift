@@ -15,8 +15,7 @@ final public class HIDDeputy: ObservableObject {
   private var notificationPort: IONotificationPortRef
   private var runLoop: CFRunLoopSource
   
-//  private var seizedDevices: [IOHIDDevice] = .init()
-  private var seizedDevice: IOHIDDevice?
+  public var seizedDevice: IOHIDDevice?
   
   init() {
     self.notificationPort = IONotificationPortCreate(kIOMainPortDefault)
@@ -53,10 +52,6 @@ final public class HIDDeputy: ObservableObject {
     //    RunLoop.current.run() // code appears to run without this?
   }
   
-  deinit {
-//    self.releaseSeizedDevices()
-  }
-  
   private func captureDevices(_ devices: io_iterator_t) {
     guard (IOIteratorIsValid(devices) != 0) else { return }
     
@@ -69,7 +64,6 @@ final public class HIDDeputy: ObservableObject {
         
         if error == kIOReturnSuccess {
           os_log("Seized device")
-//          self.seizedDevices.append(deviceReference)
           self.seizedDevice = deviceReference
           
           let selfPointer = Unmanaged.passUnretained(self).toOpaque()
@@ -77,13 +71,10 @@ final public class HIDDeputy: ObservableObject {
             let this = Unmanaged<HIDDeputy>.fromOpaque(p!).takeUnretainedValue()
             this.seizedKeyboardCallback(result: result, sender: sender, value: value)
           }
+          
 
           IOHIDDeviceScheduleWithRunLoop(deviceReference, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue)
           IOHIDDeviceRegisterInputValueCallback(deviceReference, bridge, selfPointer)
-          
-          print("a/A key: \(kHIDUsage_KeyboardA)")
-          
-//          let manufactor = IOHIDDeviceGetProperty(deviceReference, kIOHIDManufacturerKey as CFString)
         } else {
           os_log("Failed to seize device")
         }
@@ -96,25 +87,27 @@ final public class HIDDeputy: ObservableObject {
   // Adapted from: https://stackoverflow.com/questions/30380400/how-to-tap-hook-keyboard-events-in-osx-and-record-which-keyboard-fires-each-even
   private func seizedKeyboardCallback(result: IOReturn, sender: UnsafeMutableRawPointer?, value: IOHIDValue) {
     let element: IOHIDElement = IOHIDValueGetElement(value)
-    let device = IOHIDElementGetDevice(element) // can't figure out how to cast sender as device, so this will suffice
-    
+    let device = IOHIDElementGetDevice(element)
+
     guard IOHIDElementGetUsagePage(element) == 0x7 else { return }
-    
-    let productID = IOHIDDeviceGetProperty(device, kIOHIDProductIDKey as CFString)
-    
+        
     let scancode: UInt32 = IOHIDElementGetUsage(element)
     if scancode < 4 || scancode > 231 {
       return
     }
     
     let pressed = IOHIDValueGetIntegerValue(value)
+    //    let productID = IOHIDDeviceGetProperty(device, kIOHIDProductIDKey as CFString)
     
-    print("scancode: \(scancode), pressed: \(pressed), keyboardId: \(String(describing: productID))")
+    // Touchdown 'a' to release keyboard
+    if pressed == 1 && scancode == 4 {
+      os_log("Releasing keyboard")
+      DispatchQueue.main.async {
+        IOHIDDeviceRegisterInputValueCallback(device, nil, nil) // unregister, https://developer.apple.com/library/archive/technotes/tn2187/_index.html
+        IOHIDDeviceUnscheduleFromRunLoop(device, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue)
+        IOHIDDeviceClose(device, IOOptionBits(kIOHIDOptionsTypeNone))
+        self.seizedDevice = nil
+      }
+    }
   }
-  
-//  private func releaseSeizedDevices() {
-//    for seizedDevice in seizedDevices {
-//      IOHIDDeviceClose(seizedDevice, IOOptionBits(kIOHIDOptionsTypeNone))
-//    }
-//  }
 }
