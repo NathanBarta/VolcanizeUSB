@@ -136,13 +136,9 @@ import SwiftUI
 
 // https://ieftimov.com/posts/create-manage-macos-launchd-agents-golang/
 
-// NEXT STEPS
-// - Probably go back to reviewing Objective-See code, see if I can run it locally
-// - I think DND and KnockKnock are probably two good places to start
-
 // IOUSBLib Device
 // +++ IOUSBDeviceStruct100
-// - USBDeviceOpen: Opens for exclusive access... if I can get to it first [MAYBE NEXT STEPS IS JUST BUILDING AN OBSERVER & SEEING IF I CAN LOCK DOWN EA]
+// - USBDeviceOpen: Opens for exclusive access... if I can get to it first
 // - GetDeviceSubClass...: All of the getters are here
 // - GetLocationID: Seems to uniquely ID a USB device unless topogology changes (hubs? could this be exploited?)
 // - CreateInterfaceIterator: Could be necessary to find keyboards on devices
